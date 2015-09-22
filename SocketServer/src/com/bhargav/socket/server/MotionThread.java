@@ -1,45 +1,37 @@
 package com.bhargav.socket.server;
 
 import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.Robot;
 
 public class MotionThread implements Runnable{
 	
-	public static int x, y;
-	//public static Robot robot;
+	private static boolean moveFlag = false;
+	private int x,y;
+	
+	public MotionThread(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+	
+	public static void invertFlag(){
+		moveFlag = !moveFlag;
+	}
 
 	@Override
 	public void run() {
-		
 		try{
-		
-		Point point = MouseInfo.getPointerInfo().getLocation();
-		/*int xCoord = (int) point.getX();
-		int yCoord = (int) point.getY();*/
-		Robot robot = new Robot();
-		
-		for(;;)
-		{
-			if(SocketServer.moveFlag)
-			{
-				try{
+			Robot robot = new Robot();
+			for(;;){
+				if(moveFlag){
 					robot.mouseMove((int)MouseInfo.getPointerInfo().getLocation().getX()+x, (int)MouseInfo.getPointerInfo().getLocation().getY()+y);
-				    Thread.sleep(5);				    
+					Thread.sleep(5);				    
 				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			else
-				break;
-		}//infinite for ends
-		
-		}catch(Exception e)
-		{
-			
+				else
+					break;
+			}//infinite for ends
+		}catch(Exception e){
+
 		}
-		
-	}//run ends
+	}
 
 }
